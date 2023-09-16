@@ -14,7 +14,7 @@ public class UserController {
     private final UserService userService;
     @PostMapping("/login")
     public UserCustomer getUser(@RequestBody UserCustomer user) {
-        return userService.getUser(user);
+        return userService.getUserByUsername(user);
     }
     @PostMapping("/registration")
     public UserCustomer postUser(@RequestBody UserCustomer user){

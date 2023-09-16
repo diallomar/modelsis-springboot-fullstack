@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -49,11 +50,18 @@ public class UserService {
 
     public UserCustomer postUser(UserCustomer user){
         UserCustomer u = new UserCustomer();
+        List<UserCustomer> lsUsers = userCustomerRepository.findAll();
+        for (UserCustomer us : lsUsers
+             ) {
+            if (user.getUsername().equals(us.getUsername())) {
+                return u;
+            }
+        }
         u.setUsername(user.getUsername());
         u.setPassword(hashPassword(user.getPassword()));
         return userCustomerRepository.save(u);
     }
-    public UserCustomer getUser(UserCustomer user){
+    public UserCustomer getUserByUsername(UserCustomer user){
         UserCustomer user1 = userCustomerRepository.findUserByUsername(user.getUsername());
         if (verifyPassword(user.getPassword(),user1.getPassword())) {
             return user1;
@@ -61,4 +69,5 @@ public class UserService {
             return null;
         }
     }
+
 }
